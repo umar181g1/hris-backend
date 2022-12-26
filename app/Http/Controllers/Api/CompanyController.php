@@ -14,26 +14,30 @@ use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
 {
-    public function all(Request $request)
+    public function fetch(Request $request)
     {
-
         $id = $request->input('id');
         $name = $request->input('name');
         $limit = $request->input('limit', 10);
+        
+        $companyQuery = Company::with(['users'])->whereHas('users', function ($query) {
+            $query->where('user_id', Auth::id());
+        });
 
+
+        // Get single data
         if ($id) {
-            $company = Company::with(['users_id'])->find($id);
+            $company = $companyQuery->find($id);
 
             if ($company) {
                 return ResponseFormatter::success($company, 'Company found');
             }
+
             return ResponseFormatter::error('Company not found', 404);
         }
 
-
-        $companies = Company::whereHas('users', function ($query) {
-            $query->where('user_id', Auth::id());
-        });
+        // Get multiple data
+        $companies = $companyQuery;
 
         if ($name) {
             $companies->where('name', 'like', '%' . $name . '%');
@@ -41,7 +45,7 @@ class CompanyController extends Controller
 
         return ResponseFormatter::success(
             $companies->paginate($limit),
-            'Companies Founf'
+            'Companies found'
         );
     }
 
