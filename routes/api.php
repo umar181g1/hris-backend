@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\EmployeController;
+use App\Http\Controllers\Api\ResponsibiltyController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\UserController;
@@ -33,7 +35,15 @@ Route::prefix('team')->middleware('auth:sanctum')->name('team.')->group(function
     Route::get('', [TeamController::class, 'fetch'])->name('fetch');
     Route::post('', [TeamController::class, 'create'])->name('create');
     Route::post('update/{id}', [TeamController::class, 'update'])->name('update');
-    Route::delete('{Id}', [TeamController::class, 'destroy'])->name('destory');
+    Route::delete('{Id}', [TeamController::class, 'destroy'])->name('delete');
+});
+
+// Employee API
+Route::prefix('employee')->middleware('auth:sanctum')->name('employee.')->group(function () {
+    Route::get('', [EmployeController::class, 'fetch'])->name('fetch');
+    Route::post('', [EmployeController::class, 'create'])->name('create');
+    Route::post('update/{id}', [EmployeController::class, 'update'])->name('update');
+    Route::delete('{Id}', [EmployeController::class, 'destroy'])->name('delete');
 });
 
 // Role API
@@ -41,8 +51,16 @@ Route::prefix('role')->middleware('auth:sanctum')->name('role.')->group(function
     Route::get('', [RoleController::class, 'fetch'])->name('fetch');
     Route::post('', [RoleController::class, 'create'])->name('create');
     Route::post('update/{id}', [RoleController::class, 'update'])->name('update');
-    Route::delete('{Id}', [RoleController::class, 'destroy'])->name('destory');
+    Route::delete('{Id}', [RoleController::class, 'destroy'])->name('delete');
 });
+
+// Responsilibity  API
+Route::prefix('responsibility')->middleware('auth:sanctum')->name('responsibility.')->group(function () {
+    Route::get('', [ResponsibiltyController::class, 'fetch'])->name('fetch');
+    Route::post('', [ResponsibiltyController::class, 'create'])->name('create');
+    Route::delete('{id}', [ResponsibiltyController::class, 'destroy'])->name('delete');
+});
+
 
 // Auth API
 Route::name('auth.')->group(function () {
