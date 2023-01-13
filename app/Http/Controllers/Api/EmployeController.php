@@ -87,7 +87,7 @@ class EmployeController extends Controller
                 'gender' => $request->gender,
                 'age' => $request->age,
                 'phone' => $request->phone,
-                'photo' => $path,
+                'photo' => Isset($path) ? $path : "",,
                 'team_id' => $request->team_id,
                 'role_id' => $request->role_id,
 
